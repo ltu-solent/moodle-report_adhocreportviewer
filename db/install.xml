@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="report/adhocreportviewer/db" VERSION="20220201" COMMENT="XMLDB file for Moodle report/adhocreportviewer"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="report_adhocreportviewer" COMMENT="Access permissions to view ad-hoc reports.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="cqid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of adhoc report."/>
+        <FIELD NAME="accesstype" TYPE="char" LENGTH="50" NOTNULL="true" DEFAULT="user" SEQUENCE="false" COMMENT="The access is being given to this entity."/>
+        <FIELD NAME="accessid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The id of the entity that has access."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="cqid" TYPE="foreign" FIELDS="cqid" REFTABLE="report_customsql_queries" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="accesscqidaid" UNIQUE="true" FIELDS="cqid,accesstype,accessid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
