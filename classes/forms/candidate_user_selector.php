@@ -74,9 +74,9 @@ class candidate_user_selector extends user_selector_base {
 
 
         if ($search) {
-            $groupname = get_string('potusersmatching', 'cohort', $search);
+            $groupname = get_string('potentialpeoplematching', 'report_adhocreportviewer', $search);
         } else {
-            $groupname = get_string('potusers', 'cohort');
+            $groupname = get_string('potentialpeople', 'report_adhocreportviewer');
         }
 
         return array($groupname => $availableusers);

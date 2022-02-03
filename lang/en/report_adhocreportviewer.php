@@ -34,10 +34,12 @@ $string['assignusers'] = 'Assign people to reports';
 $string['backtoreports'] = 'Back to report list';
 
 $string['currentpeople'] = 'Current people';
+$string['currentpeoplematching'] = 'Current people matching';
 
 $string['nopermission'] = 'You do not have permission to view this report';
 
 $string['potentialpeople'] = 'Potential people';
+$string['potentialpeoplematching'] = 'Potential people matching';
 $string['pluginname'] = 'adhocreportviewer';
 $string['privacy:metadata'] = 'The report_adhocreportviewer plugin does not store any personal data.';
 

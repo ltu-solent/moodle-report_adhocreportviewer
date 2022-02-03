@@ -73,9 +73,9 @@ class existing_user_selector extends user_selector_base {
 
 
         if ($search) {
-            $groupname = get_string('currentusersmatching', 'cohort', $search);
+            $groupname = get_string('currentpeoplematching', 'report_adhocreportviewer', $search);
         } else {
-            $groupname = get_string('currentusers', 'cohort');
+            $groupname = get_string('currentpeople', 'report_adhocreportviewer');
         }
 
         return array($groupname => $availableusers);
