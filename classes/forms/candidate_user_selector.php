@@ -81,4 +81,11 @@ class candidate_user_selector extends user_selector_base {
 
         return array($groupname => $availableusers);
     }
+
+    protected function get_options() {
+        $options = parent::get_options();
+        $options['accesstype'] = $this->accesstype ?? 'user';
+        $options['cqid'] = $this->cqid;
+        return $options;
+    }
 }
