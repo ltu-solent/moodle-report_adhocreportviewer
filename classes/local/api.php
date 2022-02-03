@@ -54,7 +54,7 @@ class api {
         if (is_siteadmin()) {
            return $DB->get_records('report_customsql_queries');
         }
-        $viewables = $DB->get_records('report_adhocreportviewer', ['accesstype' => 'user' , 'accessid' => $user->id]);
+        $viewables = $DB->get_records('report_adhocreportviewer', ['accesstype' => 'user' , 'accessid' => $user->id], '', 'cqid');
         $ids = array_keys($viewables);
         list($insql, $inparams) = $DB->get_in_or_equal($ids);
         $reports = $DB->get_records_sql("SELECT * FROM {report_customsql_queries} WHERE id $insql", $inparams);

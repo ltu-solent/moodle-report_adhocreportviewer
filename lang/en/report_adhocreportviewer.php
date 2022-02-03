@@ -25,12 +25,24 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['addpeople'] = 'Add people';
 $string['adhocreportviewer:manage'] = 'Manage report assignments';
 $string['assign'] = 'Assign';
 $string['assignto'] = 'Allow these people to view "{$a}" report';
 $string['assignusers'] = 'Assign people to reports';
+
+$string['backtoreports'] = 'Back to report list';
+
+$string['currentpeople'] = 'Current people';
+
 $string['nopermission'] = 'You do not have permission to view this report';
+
+$string['potentialpeople'] = 'Potential people';
 $string['pluginname'] = 'adhocreportviewer';
 $string['privacy:metadata'] = 'The report_adhocreportviewer plugin does not store any personal data.';
+
+$string['removepeople'] = 'Remove people';
 $string['removeuserwarning'] = 'Removing user';
 $string['report_adhocreportviewer'] = 'Report viewer';
+
+$string['timeexecutionwarning'] = 'Warning: This report took {$a} seconds to run last time.';

@@ -53,8 +53,8 @@ class candidate_user_selector extends user_selector_base {
         $countfields = 'SELECT COUNT(1)';
 
         $sql = " FROM {user} u
-                LEFT JOIN {report_adhocreportviewer} v ON (v.accessid = u.id AND accesstype = :accesstype)
-                WHERE v.cqid IS NULL AND $wherecondition";
+                LEFT JOIN {report_adhocreportviewer} v ON (v.accessid = u.id AND v.cqid = :cqid AND accesstype = :accesstype)
+                WHERE v.id IS NULL AND $wherecondition";
 
         list($sort, $sortparams) = users_order_by_sql('u', $search, $this->accesscontext);
         $order = ' ORDER BY ' . $sort;

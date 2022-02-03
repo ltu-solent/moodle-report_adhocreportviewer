@@ -32,17 +32,27 @@ require_once($CFG->dirroot . '/user/selector/lib.php');
 
 class existing_user_selector extends user_selector_base {
 
+    private $cqid;
+    private $accesstype = 'user';
+
+    public function __construct($name, $options) {
+        $this->cqid = $options['cqid'];
+        $this->accesstype = $options['accesstype'] ?? 'user';
+        parent::__construct($name, $options);
+    }
+
     public function find_users($search) {
         global $DB;
         // By default wherecondition retrieves all users except the deleted, not confirmed and guest.
         list($wherecondition, $params) = $this->search_sql($search, 'u');
-        // $params['cohortid'] = $this->cohortid;
+        $params['cqid'] = $this->cqid;
+        $params['accesstype'] = $this->accesstype;
 
         $fields      = 'SELECT ' . $this->required_fields_sql('u');
         $countfields = 'SELECT COUNT(1)';
 
         $sql = " FROM {user} u
-            JOIN {report_adhocreportviewer} v ON (v.accessid = u.id AND v.accesstype = 'user')
+            JOIN {report_adhocreportviewer} v ON (v.accessid = u.id AND v.accesstype = :accesstype AND v.cqid = :cqid)
                 WHERE $wherecondition";
 
         list($sort, $sortparams) = users_order_by_sql('u', $search, $this->accesscontext);

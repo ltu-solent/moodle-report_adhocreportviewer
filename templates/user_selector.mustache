@@ -1,0 +1,32 @@
+<form id="{{formid}}" method="post" action="{{{formurl}}}"><div>
+  <input type="hidden" name="sesskey" value="{{sesskey}}" />
+  <input type="hidden" name="returnurl" value="{{{returnurl}}}" />
+
+  <table summary="" class="generaltable generalbox boxaligncenter" cellspacing="0">
+    <tr>
+      <td id="existingcell">
+          <p><label for="removeselect">{{removeselectlabel}}</label></p>
+          {{{existinguserselector}}}
+      </td>
+      <td id="buttonscell">
+          <div id="addcontrols">
+              <input class="btn btn-secondary" name="add" id="add" type="submit" 
+                value="{{{addbuttonlabel}}}" title="{{addbuttontitle}}" /><br />
+          </div>
+
+          <div id="removecontrols">
+              <input class="btn btn-secondary" name="remove" id="remove" type="submit"
+                     value="{{{removebuttonlabel}}}"
+                     title="{{removebuttontitle}}" />
+          </div>
+      </td>
+      <td id="potentialcell">
+          <p><label for="addselect">{{addselectlabel}}</label></p>
+          {{{potentialuserselector}}}
+      </td>
+    </tr>
+    <tr><td colspan="3" id='backcell'>
+      <input class="btn btn-secondary" type="submit" name="cancel" value="{{backbuttonlabel}}" />
+    </td></tr>
+  </table>
+</div></form>

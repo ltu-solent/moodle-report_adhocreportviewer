@@ -48,6 +48,13 @@ foreach ($reports as $report) {
         $editurl = new moodle_url('/report/adhocreportviewer/assign.php', ['cqid' => $report->id]);
         $html .= ' ' . html_writer::link($editurl, 'Edit access');
     }
+    if ($report->lastexecutiontime > 5000) { // 5 Seconds.
+        $html .= html_writer::div(
+            get_string('timeexecutionwarning', 'report_adhocreportviewer', $report->lastexecutiontime),
+            'alert alert-warning'
+        );
+    }
+    $html .= format_text($report->description);
     $reportlist[] = $html;
 
 }

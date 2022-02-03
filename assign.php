@@ -90,42 +90,9 @@ if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
     }
 }
 
-
-// Print the form.
-?>
-<form id="assignform" method="post" action="<?php echo $PAGE->url ?>"><div>
-  <input type="hidden" name="sesskey" value="<?php echo sesskey() ?>" />
-  <input type="hidden" name="returnurl" value="<?php echo $returnurl->out_as_local_url() ?>" />
-
-  <table summary="" class="generaltable generalbox boxaligncenter" cellspacing="0">
-    <tr>
-      <td id="existingcell">
-          <p><label for="removeselect"><?php print_string('currentusers', 'cohort'); ?></label></p>
-          <?php $existinguserselector->display() ?>
-      </td>
-      <td id="buttonscell">
-          <div id="addcontrols">
-              <input class="btn btn-secondary" name="add" id="add" type="submit" value="<?php echo $OUTPUT->larrow() . '&nbsp;' .
-                  s(get_string('add')); ?>" title="<?php p(get_string('add')); ?>" /><br />
-          </div>
-
-          <div id="removecontrols">
-              <input class="btn btn-secondary" name="remove" id="remove" type="submit"
-                     value="<?php echo s(get_string('remove')) . '&nbsp;' . $OUTPUT->rarrow(); ?>"
-                     title="<?php p(get_string('remove')); ?>" />
-          </div>
-      </td>
-      <td id="potentialcell">
-          <p><label for="addselect"><?php print_string('potusers', 'cohort'); ?></label></p>
-          <?php $potentialuserselector->display() ?>
-      </td>
-    </tr>
-    <tr><td colspan="3" id='backcell'>
-      <input class="btn btn-secondary" type="submit" name="cancel" value="<?php p(get_string('backtocohorts', 'cohort')); ?>" />
-    </td></tr>
-  </table>
-</div></form>
-
-<?php
+$userselector = new \report_adhocreportviewer\output\user_selector(
+    $existinguserselector,
+    $potentialuserselector);
+echo $OUTPUT->render($userselector);
 
 echo $OUTPUT->footer();
