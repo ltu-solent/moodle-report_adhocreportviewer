@@ -1,0 +1,44 @@
+
+<div class="csql_expandcollapseallcontainer">
+    <a href="#" class="csql_expandcollapseall"
+        data-expandalltext="{{#str}} expandall {{/str}}"
+        data-collapsealltext="{{#str}} collapseall {{/str}}">
+        {{#str}} expandall {{/str}}
+    </a>
+</div>
+{{#categories}}
+<div class="csql_category csql_category{{show}}">
+    <h2>
+        <a href="{{{linkhref}}}" class="categoryname">{{catname}}</a>
+        <span class="reportcounts">{{{reportcounts}}}</span>
+    </h2>
+    <div class="csql_category_reports">
+    {{#noreports}}
+        <h3>{{#str}} availablereports, report_customsql {{/str}}</h3>
+        <p>{{#str}} noreportsavailable, report_customsql {{/str}}</p>
+    {{/noreports}}
+    {{#manual}}
+        {{> report_adhocreportviewer/reports_for }}
+    {{/manual}}
+    {{#daily}}
+        {{> report_adhocreportviewer/reports_for }}
+    {{/daily}}
+    {{#weekly}}
+        {{> report_adhocreportviewer/reports_for }}
+    {{/weekly}}
+    {{#monthly}}
+        {{> report_adhocreportviewer/reports_for }}
+    {{/monthly}}
+    </div>
+</div>
+{{/categories}}
+
+{{#showexpandable}}
+<div class="csql_expandcollapseallcontainer">
+    <a href="#" class="csql_expandcollapseall"
+        data-expandalltext="{{#str}} expandall {{/str}}"
+        data-collapsealltext="{{#str}} collapseall {{/str}}">
+        {{#str}} expandall {{/str}}
+    </a>
+</div>
+{{/showexpandable}}

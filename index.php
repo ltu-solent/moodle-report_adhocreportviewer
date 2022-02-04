@@ -28,7 +28,15 @@ require_once($CFG->dirroot . '/report/customsql/locallib.php');
 
 
 $reports = \report_adhocreportviewer\local\api::viewablereports($USER);
-$canmanage = \report_adhocreportviewer\local\api::canmanage();
+$categories = \report_adhocreportviewer\local\api::categories($reports);
+$canmanageaccess = \report_adhocreportviewer\local\api::canmanageaccess();
+$canedit = has_capability('report/customsql:definequeries', context_system::instance());
+if (count($reports) == 0) {
+    print_error('noaccess');
+}
+$permissions = new stdClass();
+$permissions->canedit = $canedit;
+$permissions->canmanageaccess = $canmanageaccess;
 
 $PAGE->set_pagelayout('admin');
 $PAGE->set_context(context_system::instance());
@@ -39,25 +47,16 @@ $PAGE->navbar->add(format_string("Reports"));
 echo $OUTPUT->header();
 echo $OUTPUT->heading(format_string("Reports"));
 
-$reportlist = [];
-foreach ($reports as $report) {
-    $viewurl = new moodle_url('/report/adhocreportviewer/view.php', ['cqid' => $report->id]);
-    
-    $html = html_writer::link($viewurl, s($report->displayname));
-    if ($canmanage) {
-        $editurl = new moodle_url('/report/adhocreportviewer/assign.php', ['cqid' => $report->id]);
-        $html .= ' ' . html_writer::link($editurl, 'Edit access');
-    }
-    if ($report->lastexecutiontime > 5000) { // 5 Seconds.
-        $html .= html_writer::div(
-            get_string('timeexecutionwarning', 'report_adhocreportviewer', $report->lastexecutiontime),
-            'alert alert-warning'
-        );
-    }
-    $html .= format_text($report->description);
-    $reportlist[] = $html;
-
+$showcat = optional_param('showcat', 0, PARAM_INT);
+$hidecat = optional_param('hidecat', 0, PARAM_INT);
+if (!$showcat && count($categories) == 1) {
+    $showcat = reset($categories)->id;
 }
-echo html_writer::alist($reportlist);
+
+$reportlist = new \report_adhocreportviewer\output\report_list($categories, $permissions, $showcat, $hidecat);
+echo $OUTPUT->render($reportlist);
+
+// Initialise the expand/collapse JavaScript.
+$PAGE->requires->js_call_amd('report_customsql/reportcategories', 'init');
 
 echo $OUTPUT->footer();

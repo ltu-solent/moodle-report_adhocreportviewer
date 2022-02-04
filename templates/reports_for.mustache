@@ -1,0 +1,22 @@
+
+{{#type}}
+    <h3>{{header}}<span>{{{helpicon}}}</span></h3>
+{{/type}}
+{{#reports}}
+    <p>
+        <a href="{{{viewurl}}}">{{viewdisplayname}}</a>
+        {{#lastrun}}
+            <span class="admin_note {{warning}}">{{#str}} lastexecutiontime , report_adhocreportviewer, {{lastexecutiontime}}{{/str}}</span>
+        {{/lastrun}}
+    {{#canedit}}
+        <a href="{{{url}}}">
+            {{#pix}} t/edit, core, {{#str}} editreport, report_adhocreportviewer {{/str}} {{/pix}}
+        </a>
+    {{/canedit}}
+    {{#canmanageaccess}}
+    <a href="{{{url}}}">
+            {{#pix}} t/groups, core, {{#str}} editaccess, report_adhocreportviewer {{/str}} {{/pix}}
+        </a>
+    {{/canmanageaccess}}
+    </p>
+{{/reports}}

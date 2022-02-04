@@ -36,11 +36,16 @@ $string['backtoreports'] = 'Back to report list';
 $string['currentpeople'] = 'Current people';
 $string['currentpeoplematching'] = 'Current people matching';
 
+$string['editaccess'] = 'Edit access';
+$string['editreport'] = 'Edit report';
+
+$string['lastexecutiontime'] = 'Last execution time: {$a} seconds.';
+
 $string['nopermission'] = 'You do not have permission to view this report';
 
 $string['potentialpeople'] = 'Potential people';
 $string['potentialpeoplematching'] = 'Potential people matching';
-$string['pluginname'] = 'adhocreportviewer';
+$string['pluginname'] = 'Adhoc report viewer';
 $string['privacy:metadata'] = 'The report_adhocreportviewer plugin does not store any personal data.';
 
 $string['removepeople'] = 'Remove people';
