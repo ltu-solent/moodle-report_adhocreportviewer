@@ -45,6 +45,8 @@ $PAGE->set_pagelayout('admin');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url(new moodle_url('/report/adhocreportviewer/view.php'), $urlparams);
 $PAGE->set_title(format_string($report->displayname));
+$returnurl = new moodle_url('/report/adhocreportviewer/index.php');
+$PAGE->navbar->add(get_string('pluginname', 'report_adhocreportviewer'), $returnurl);
 $PAGE->navbar->add(format_string($report->displayname));
 
 if ($report->runable == 'manual') {

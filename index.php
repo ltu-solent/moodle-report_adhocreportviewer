@@ -41,11 +41,11 @@ $permissions->canmanageaccess = $canmanageaccess;
 $PAGE->set_pagelayout('admin');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url(new moodle_url('/report/adhocreportviewer/index.php'));
-$PAGE->set_title(format_string("Reports"));
-$PAGE->navbar->add(format_string("Reports"));
+$PAGE->set_title(get_string('pluginname', 'report_adhocreportviewer'));
+$PAGE->navbar->add(get_string('pluginname', 'report_adhocreportviewer'));
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(format_string("Reports"));
+echo $OUTPUT->heading(get_string('pluginname', 'report_adhocreportviewer'));
 
 $showcat = optional_param('showcat', 0, PARAM_INT);
 $hidecat = optional_param('hidecat', 0, PARAM_INT);

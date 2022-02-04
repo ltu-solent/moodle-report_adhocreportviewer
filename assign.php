@@ -45,7 +45,7 @@ $returnurl = new moodle_url('/report/adhocreportviewer/index.php');
 if (optional_param('cancel', false, PARAM_BOOL)) {
     redirect($returnurl);
 }
-
+$PAGE->navbar->add(get_string('pluginname', 'report_adhocreportviewer'), $returnurl);
 $PAGE->navbar->add(get_string('assign', 'report_adhocreportviewer'));
 
 
