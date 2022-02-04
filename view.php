@@ -26,6 +26,7 @@
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->dirroot . '/report/customsql/locallib.php');
+require_once($CFG->dirroot . '/report/customsql/view_form.php');
 
 // For now this is the customsql reportid
 $id = required_param('cqid', PARAM_INT);
@@ -63,8 +64,8 @@ if ($report->runable == 'manual') {
             }
         }
 
-        $relativeurl = 'view.php?id=' . $id;
-        $mform = new report_customsql_view_form(report_customsql_url($relativeurl), $queryparams);
+        $relativeurl = new moodle_url('/report/adhocreportviewer/view.php', ['cqid' => $id]);
+        $mform = new report_customsql_view_form($relativeurl, $queryparams);
         $formdefaults = [];
         if ($report->queryparams) {
             foreach (unserialize($report->queryparams) as $queryparam => $defaultvalue) {
@@ -77,7 +78,8 @@ if ($report->runable == 'manual') {
         $mform->set_data($formdefaults);
 
         if ($mform->is_cancelled()) {
-            redirect(report_customsql_url('index.php'));
+            $redirect = new moodle_url('/report/adhocreportviewer/index.php');
+            redirect($redirect);
         }
 
         if (($newreport = $mform->get_data()) || count($paramvalues) == count($queryparams)) {
@@ -91,11 +93,6 @@ if ($report->runable == 'manual') {
             $report->queryparams = serialize($paramvalues);
 
         } else {
-
-            admin_externalpage_setup('report_customsql', '', $urlparams,
-                    '/report/customsql/view.php');
-            $PAGE->set_title(format_string($report->displayname));
-            $PAGE->navbar->add(format_string($report->displayname));
             echo $OUTPUT->header();
             echo $OUTPUT->heading(format_string($report->displayname));
             if (!html_is_blank($report->description)) {
@@ -104,7 +101,7 @@ if ($report->runable == 'manual') {
             $mform->display();
 
             echo $OUTPUT->footer();
-            die;
+            die();
         }
     }
 
@@ -113,9 +110,20 @@ if ($report->runable == 'manual') {
         // Get the updated execution times.
         $report = $DB->get_record('report_customsql_queries', array('id' => $id));
     } catch (Exception $e) {
-        print_error('queryfailed', 'report_customsql', report_customsql_url('index.php'),
+        print_error('queryfailed', 'report_customsql', new moodle_url('/report/adhocreportviewer/index.php'),
                     $e->getMessage());
     }
+} else {
+    // Runs on schedule.
+    $csvtimestamp = optional_param('timestamp', null, PARAM_INT);
+    if ($csvtimestamp === null) {
+        $archivetimes = report_customsql_get_archive_times($report);
+        $csvtimestamp = array_shift($archivetimes);
+    }
+    if ($csvtimestamp === null) {
+        $csvtimestamp = time();
+    }
+    $urlparams['timestamp'] = $csvtimestamp;
 }
 
 
@@ -190,7 +198,7 @@ if (is_null($csvtimestamp)) {
         echo report_customsql_time_note($report, 'p');
 
         echo $OUTPUT->download_dataformat_selector(get_string('downloadthisreportas', 'report_customsql'),
-            new moodle_url(report_customsql_url('download.php')), 'dataformat', ['id' => $id, 'timestamp' => $csvtimestamp]);
+            new moodle_url('/report/adhocreportviewer/download.php'), 'dataformat', ['id' => $id, 'timestamp' => $csvtimestamp]);
 
         $archivetimes = report_customsql_get_archive_times($report);
         if (count($archivetimes) > 1) {
@@ -215,7 +223,7 @@ if (is_null($csvtimestamp)) {
 
 if (!empty($queryparams)) {
     echo html_writer::tag('p', html_writer::link(
-            new moodle_url(report_customsql_url('view.php'), array('id' => $id)),
+            new moodle_url('/report/adhocreportviewer/view.php', array('cqid' => $id)),
             get_string('changetheparameters', 'report_customsql')));
 }
 
