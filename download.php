@@ -42,16 +42,13 @@ $canview = \report_adhocreportviewer\local\api::canview($USER, $id);
 if (!$canview) {
     print_error('nopermissions');
 }
-// if (!empty($report->capability)) {
-//     require_capability($report->capability, $context);
-// }
 
 list($csvfilename) = report_customsql_csv_filename($report, $csvtimestamp);
 
 $handle = fopen($csvfilename, 'r');
 if ($handle === false) {
     print_error('unknowndownloadfile', 'report_customsql',
-                report_customsql_url('view.php?id=' . $id));
+                new moodle_url('/report/adhocreportviewer/view.php?cqid=' . $id));
 }
 
 $fields = report_customsql_read_csv_row($handle);
