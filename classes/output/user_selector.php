@@ -72,13 +72,18 @@ class user_selector implements renderable, templatable {
         $data->formurl = $PAGE->url;
         $data->sesskey = sesskey();
         $data->returnurl = new moodle_url('/report/adhocreportviewer/');
-        $data->removeselectlabel = get_string('currentpeople', 'report_adhocreportviewer');
+        // We do this here, because the mustache checker doesn't like a dangling "for".
+        $data->removeselectlabel = '<label for="removeselect">' .
+            get_string('currentpeople', 'report_adhocreportviewer') .
+            '</label>';
         $data->existinguserselector = $this->existingusersselector->display(true);
         $data->addbuttonlabel = $OUTPUT->larrow() . '&nbsp;' . s(get_string('addpeople', 'report_adhocreportviewer'));
         $data->addbuttontitle = s(get_string('addpeople', 'report_adhocreportviewer'));
         $data->removebuttonlabel = s(get_string('removepeople', 'report_adhocreportviewer')) . '&nbsp;' . $OUTPUT->rarrow();
         $data->removebuttontitle = s(get_string('removepeople', 'report_adhocreportviewer'));
-        $data->addselectlabel = get_string('potentialpeople', 'report_adhocreportviewer');
+        $data->addselectlabel = '<label for="addselect">' .
+            get_string('potentialpeople', 'report_adhocreportviewer') .
+            '</label>';
         $data->potentialuserselector = $this->candidateuserselector->display(true);
         $data->backbuttonlabel = s(get_string('backtoreports', 'report_adhocreportviewer'));
 
