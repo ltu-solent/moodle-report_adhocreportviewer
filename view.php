@@ -28,17 +28,19 @@ require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->dirroot . '/report/customsql/locallib.php');
 require_once($CFG->dirroot . '/report/customsql/view_form.php');
 
-// For now this is the customsql reportid
+// This is the customsql reportid.
 $id = required_param('cqid', PARAM_INT);
 $urlparams = ['cqid' => $id];
 $report = $DB->get_record('report_customsql_queries', ['id' => $id]);
 if (!$report) {
-    print_error('invalidreportid', 'report_customsql');
+    throw new moodle_exception('invalidreportid', 'report_customsql', new moodle_url('/report/adhocreportviewer/index.php'), $id);
 }
+
+require_login();
 
 $canview = \report_adhocreportviewer\local\api::canview($USER, $id);
 if (!$canview) {
-    print_error('nopermission', 'report_adhocreportviewer', '', null, $USER->id . ' - ' . $id );
+    throw new moodle_exception('nopermission', 'report_adhocreportviewer', '', null, $USER->id . ' - ' . $id );
 }
 
 // Setup the page.
@@ -52,7 +54,7 @@ $PAGE->navbar->add(format_string($report->displayname));
 
 if ($report->runable == 'manual') {
      // Allow query parameters to be entered.
-     if (!empty($report->queryparams)) {
+    if (!empty($report->queryparams)) {
         $queryparams = report_customsql_get_query_placeholders_and_field_names($report->querysql);
 
         // Get any query param values that are given in the URL.
@@ -110,8 +112,8 @@ if ($report->runable == 'manual') {
         // Get the updated execution times.
         $report = $DB->get_record('report_customsql_queries', array('id' => $id));
     } catch (Exception $e) {
-        print_error('queryfailed', 'report_customsql', new moodle_url('/report/adhocreportviewer/index.php'),
-                    $e->getMessage());
+        throw new moodle_exception('queryfailed', 'report_customsql',
+            new moodle_url('/report/adhocreportviewer/index.php'), $e->getMessage());
     }
 } else {
     // Runs on schedule.

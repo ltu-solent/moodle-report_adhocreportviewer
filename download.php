@@ -17,7 +17,7 @@
 /**
  * Script to download the CSV version of a SQL report.
  *
- * @package report_customsql
+ * @package report_adhocreportviewer
  * @copyright 2009 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,21 +33,21 @@ $dataformat = optional_param('dataformat', '', PARAM_ALPHA);
 
 $report = $DB->get_record('report_customsql_queries', array('id' => $id));
 if (!$report) {
-    print_error('invalidreportid', 'report_customsql', new moodle_url('/report/adhocreportviewer/index.php'), $id);
+    throw new moodle_exception('invalidreportid', 'report_customsql', new moodle_url('/report/adhocreportviewer/index.php'), $id);
 }
 
 require_login();
 $context = context_system::instance();
 $canview = \report_adhocreportviewer\local\api::canview($USER, $id);
 if (!$canview) {
-    print_error('nopermissions');
+    throw new moodle_exception('nopermissions');
 }
 
 list($csvfilename) = report_customsql_csv_filename($report, $csvtimestamp);
 
 $handle = fopen($csvfilename, 'r');
 if ($handle === false) {
-    print_error('unknowndownloadfile', 'report_customsql',
+    throw new moodle_exception('unknowndownloadfile', 'report_customsql',
                 new moodle_url('/report/adhocreportviewer/view.php?cqid=' . $id));
 }
 

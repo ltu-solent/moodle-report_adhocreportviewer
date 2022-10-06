@@ -28,10 +28,18 @@ namespace report_adhocreportviewer\local;
 use context_system;
 use stdClass;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * General helper class for plugin.
+ */
 class api {
-    
+    /**
+     * Add access entry to DB
+     *
+     * @param int $cqid Customsql id
+     * @param int $accessid ID of the entity that has access (currently userid, but could be cohortid include the future)
+     * @param string $accesstype Currently only 'user'
+     * @return void
+     */
     public static function add_access($cqid, $accessid, $accesstype = 'user') {
         global $DB;
         $record = new stdClass();
@@ -41,6 +49,11 @@ class api {
         $DB->insert_record('report_adhocreportviewer', $record);
     }
 
+    /**
+     * Can current user manage access to reports?
+     *
+     * @return boolean
+     */
     public static function canmanageaccess(): bool {
         global $DB;
         if (is_siteadmin()) {
@@ -49,12 +62,20 @@ class api {
         return has_capability('report/adhocreportviewer:manage', context_system::instance());
     }
 
+    /**
+     * Can current specified user view given report
+     *
+     * @param stdClass $user User object
+     * @param int $id Customsql ID
+     * @return boolean
+     */
     public static function canview($user, $id): bool {
         global $DB;
         if (is_siteadmin()) {
             return true;
         }
-        $recordexists = $DB->record_exists('report_adhocreportviewer', ['cqid' => $id, 'accesstype' => 'user', 'accessid' => $user->id]);
+        $recordexists = $DB->record_exists('report_adhocreportviewer',
+            ['cqid' => $id, 'accesstype' => 'user', 'accessid' => $user->id]);
         return $recordexists;
     }
 
@@ -91,6 +112,14 @@ class api {
         return $categories;
     }
 
+    /**
+     * Remove access for given report to the specified entity
+     *
+     * @param int $cqid CustomSQL ID
+     * @param int $accessid Entity ID (user, cohort...)
+     * @param string $accesstype ('user' only)
+     * @return void
+     */
     public static function remove_access($cqid, $accessid, $accesstype = 'user') {
         global $DB;
         $DB->delete_records('report_adhocreportviewer', [
@@ -100,10 +129,16 @@ class api {
         ]);
     }
 
+    /**
+     * Get a list of reports the given user can view
+     *
+     * @param stdClass $user
+     * @return array
+     */
     public static function viewablereports($user): array {
         global $DB;
         if (is_siteadmin()) {
-           return $DB->get_records('report_customsql_queries');
+            return $DB->get_records('report_customsql_queries');
         }
         $viewables = $DB->get_records('report_adhocreportviewer', ['accesstype' => 'user' , 'accessid' => $user->id], '', 'cqid');
         if (count($viewables) == 0) {
@@ -115,6 +150,12 @@ class api {
         return $reports;
     }
 
+    /**
+     * Sort report categories nicely
+     *
+     * @param array $records
+     * @return array
+     */
     public static function sortcats($records): array {
         $sortedrecords = [];
 
@@ -127,5 +168,3 @@ class api {
         return $sortedrecords;
     }
 }
-
-

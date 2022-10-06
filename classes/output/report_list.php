@@ -31,15 +31,44 @@ use renderer_base;
 use stdClass;
 use templatable;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Output class for list of reports
+ */
 class report_list implements renderable, templatable {
 
+    /**
+     * Report categories
+     *
+     * @var array
+     */
     private $categories;
+    /**
+     * List of permissions linked to this page
+     *
+     * @var stdClass
+     */
     private $permissions;
+    /**
+     * Show categoryid
+     *
+     * @var int
+     */
     private $showcat;
+    /**
+     * Hide specified categoryid
+     *
+     * @var int
+     */
     private $hidecat;
 
+    /**
+     * Constructor for output class
+     *
+     * @param array $categories
+     * @param stdClass $permissions
+     * @param integer $showcat
+     * @param integer $hidecat
+     */
     public function __construct($categories, $permissions, $showcat = 1, $hidecat = 0) {
         $this->categories = \report_adhocreportviewer\local\api::sortcats($categories);
         $this->permissions = $permissions;
@@ -47,6 +76,12 @@ class report_list implements renderable, templatable {
         $this->hidecat = $hidecat;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param renderer_base $output
+     * @return stdClass Data context for template
+     */
     public function export_for_template(renderer_base $output) {
         $data = new stdClass();
         if (count($this->categories) > 5) {
@@ -77,19 +112,23 @@ class report_list implements renderable, templatable {
                     $cat->noreports = true;
             } else {
                 if ($cc->manual > 0) {
-                    $manual = new \report_adhocreportviewer\output\reports_for($category->types['manual'], 'manual', $this->permissions);
+                    $manual = new \report_adhocreportviewer\output\reports_for(
+                        $category->types['manual'], 'manual', $this->permissions);
                     $cat->manual = $manual->export_for_template($output);
                 }
                 if ($cc->daily > 0) {
-                    $daily = new \report_adhocreportviewer\output\reports_for($category->types['daily'], 'daily', $this->permissions);
+                    $daily = new \report_adhocreportviewer\output\reports_for(
+                        $category->types['daily'], 'daily', $this->permissions);
                     $cat->daily = $daily->export_for_template($output);
                 }
                 if ($cc->weekly > 0) {
-                    $weekly = new \report_adhocreportviewer\output\reports_for($category->types['weekly'], 'weekly', $this->permissions);
+                    $weekly = new \report_adhocreportviewer\output\reports_for(
+                        $category->types['weekly'], 'weekly', $this->permissions);
                     $cat->weekly = $weekly->export_for_template($output);
                 }
                 if ($cc->monthly > 0) {
-                    $monthly = new \report_adhocreportviewer\output\reports_for($category->types['monthly'], 'monthly', $this->permissions);
+                    $monthly = new \report_adhocreportviewer\output\reports_for(
+                        $category->types['monthly'], 'monthly', $this->permissions);
                     $cat->monthly = $monthly->export_for_template($output);
                 }
             }
@@ -98,4 +137,3 @@ class report_list implements renderable, templatable {
         return $data;
     }
 }
-

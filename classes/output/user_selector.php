@@ -31,18 +31,40 @@ use renderer_base;
 use stdClass;
 use templatable;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * User selector table and form
+ */
 class user_selector implements renderable, templatable {
-    
+    /**
+     * Existing user selector
+     *
+     * @var \report_adhocreportviewer\forms\existing_user_selector
+     */
     private $existingusersselector;
+    /**
+     * Candidate user selector
+     *
+     * @var \report_adhocreportviewer\forms\candidate_user_selector
+     */
     private $candidateuserselector;
+
+    /**
+     * Constructor for user selector page
+     *
+     * @param \report_adhocreportviewer\forms\existing_user_selector $existingusersselector
+     * @param \report_adhocreportviewer\forms\candidate_user_selector $candidateuserselector
+     */
     public function __construct($existingusersselector, $candidateuserselector) {
         $this->existingusersselector = $existingusersselector;
         $this->candidateuserselector = $candidateuserselector;
-
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param renderer_base $output
+     * @return stdClass Data context for template
+     */
     public function export_for_template(renderer_base $output) {
         global $OUTPUT, $PAGE;
         $data = new stdClass();

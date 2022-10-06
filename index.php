@@ -26,13 +26,14 @@
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->dirroot . '/report/customsql/locallib.php');
 
+require_login();
 
 $reports = \report_adhocreportviewer\local\api::viewablereports($USER);
 $categories = \report_adhocreportviewer\local\api::categories($reports);
 $canmanageaccess = \report_adhocreportviewer\local\api::canmanageaccess();
 $canedit = has_capability('report/customsql:definequeries', context_system::instance());
 if (count($reports) == 0) {
-    print_error('noaccess');
+    throw new moodle_exception('noaccess');
 }
 $permissions = new stdClass();
 $permissions->canedit = $canedit;

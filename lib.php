@@ -23,8 +23,15 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Add link to reports section on profile page
+ *
+ * @param \core_user\output\myprofile\tree $tree
+ * @param stdClass $user
+ * @param bool $iscurrentuser
+ * @param stdClass $course
+ * @return bool
+ */
 function report_adhocreportviewer_myprofile_navigation(\core_user\output\myprofile\tree $tree, $user, $iscurrentuser, $course) {
     global $USER;
     if ($user->id != $USER->id) {

@@ -35,16 +35,50 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/report/customsql/locallib.php');
 
+/**
+ * Reports for run frequency type (Manual, Daily, Weekly, Monthly)
+ */
 class reports_for implements renderable, templatable {
 
+    /**
+     * Report list
+     *
+     * @var array
+     */
     private $reports;
+    /**
+     * Frequency type (Manual, Daily, Weekly, Monthly)
+     *
+     * @var string
+     */
     private $type;
+
+    /**
+     * Permissions for this page
+     *
+     * @var stdClass
+     */
+    private $permissions;
+
+    /**
+     * Constructor
+     *
+     * @param array $reports
+     * @param string $type
+     * @param stdClass $permissions
+     */
     public function __construct($reports, $type, $permissions) {
         $this->reports = \report_customsql_sort_reports_by_displayname($reports);
         $this->type = $type;
         $this->permissions = $permissions;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param renderer_base $output
+     * @return stdClass Data context for template
+     */
     public function export_for_template(renderer_base $output) {
         global $OUTPUT;
         $data = new stdClass();
@@ -62,7 +96,8 @@ class reports_for implements renderable, templatable {
             }
             if ($this->permissions->canmanageaccess) {
                 $item->canmanageaccess = new stdClass();
-                $item->canmanageaccess->url = new moodle_url('/report/adhocreportviewer/assign.php', ['cqid' => $report->id]);
+                $item->canmanageaccess->url = new moodle_url('/report/adhocreportviewer/assign.php',
+                    ['cqid' => $report->id]);
             }
             if ($report->lastrun) {
                 $item->lastrun = true;

@@ -31,17 +31,42 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/user/selector/lib.php');
 
+/**
+ * User selector class for candidate users
+ */
 class candidate_user_selector extends user_selector_base {
-    
+
+    /**
+     * customsql id
+     *
+     * @var int
+     */
     private $cqid;
+    /**
+     * Access type. Only 'user' currently used.
+     *
+     * @var string
+     */
     private $accesstype = 'user';
 
+    /**
+     * Selector form constructor
+     *
+     * @param string $name
+     * @param array $options [cqid, accesstype]
+     */
     public function __construct($name, $options) {
         $this->cqid = $options['cqid'];
         $this->accesstype = $options['accesstype'] ?? 'user';
         parent::__construct($name, $options);
     }
 
+    /**
+     * Search for user
+     *
+     * @param string $search
+     * @return array Users matching search criteria
+     */
     public function find_users($search) {
         global $DB;
         // By default wherecondition retrieves all users except the deleted, not confirmed and guest.
@@ -72,7 +97,6 @@ class candidate_user_selector extends user_selector_base {
             return array();
         }
 
-
         if ($search) {
             $groupname = get_string('potentialpeoplematching', 'report_adhocreportviewer', $search);
         } else {
@@ -82,6 +106,11 @@ class candidate_user_selector extends user_selector_base {
         return array($groupname => $availableusers);
     }
 
+    /**
+     * Gets options
+     *
+     * @return array
+     */
     protected function get_options() {
         $options = parent::get_options();
         $options['accesstype'] = $this->accesstype ?? 'user';
