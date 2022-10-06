@@ -1,3 +1,64 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template report_adhocreportviewer/user_selector
+
+    Moodle template to list reports for a category grouped by run type.
+
+    Labels were included in the context thinking this template could be reused.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * formid
+    * formurl
+    * sesskey
+    * returnurl
+    * removeselectlabel
+    * existinguserselector
+    * potentialuserselector
+    * addbuttonlabel
+    * addbuttontitle
+    * removebuttonlabel
+    * removebuttontitle
+    * addselectlabel
+    * backbuttonlabel
+
+    Example context (json):
+    {
+      "formid": "assignform",
+      "formurl": "http://www.example.com/report/adhocreportviewer/view.php?id=1",
+      "sesskey": "abc",
+      "returnurl": "http://www.example.com/report/adhocreportviewer",
+      "removeselectlabel": "Current people",
+      "existinguserselector": "render of existing user form",
+      "potentialuserselector": "render of potential user form",
+      "addbuttonlabel": "Add people",
+      "addbuttontitle": "Add people",
+      "removebuttonlabel": "Remove people",
+      "removebuttontitle": "Remove people",
+      "addselectlabel": "Potential people",
+      "backbuttonlabel": "Back to reports"
+    }
+}}
 <form id="{{formid}}" method="post" action="{{{formurl}}}"><div>
   <input type="hidden" name="sesskey" value="{{sesskey}}" />
   <input type="hidden" name="returnurl" value="{{{returnurl}}}" />

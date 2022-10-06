@@ -1,4 +1,56 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
 
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template report_adhocreportviewer/reports_for
+
+    Moodle template to list reports for a category grouped by run type.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * type Run type (Manual, Daily, Weekly, Monthly)
+    * reports
+
+    Example context (json):
+    {
+      "reports": [{
+        "viewdisplayname": "Name of report",
+        "viewurl": "http://example.com/report/adhocreportviewer/view.php?cqid=1",
+        "lastrun": {
+            "warning": "warning",
+            "lastexecutiontime": "0.1"
+        },
+        "canedit": {
+            "url": "http://example.com/report/customsql/edit.php?id=1"
+        },
+        "canmanageaccess": {
+            "url": "http://example.com/report/adhocreportviewer/assign.php?cqid=1"
+        }
+      }],
+      "type": {
+        "header": "Daily",
+        "helpicon": "Rendered icon"
+      }
+    }
+}}
 {{#type}}
     <h3>{{header}}<span>{{{helpicon}}}</span></h3>
 {{/type}}
