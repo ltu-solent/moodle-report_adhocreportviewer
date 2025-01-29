@@ -93,9 +93,9 @@ class report_list implements renderable, templatable {
             $cat->show = ($category->id == $this->showcat && $category->id != $this->hidecat) ? 'shown' : 'hidden';
 
             if ($category->id == $this->showcat) {
-                $params = array('hidecat' => $category->id);
+                $params = ['hidecat' => $category->id];
             } else {
-                $params = array('showcat' => $category->id);
+                $params = ['showcat' => $category->id];
             }
             $cat->catname = $category->name;
             $cat->linkhref = new moodle_url('/report/adhocreportviewer/index.php', $params);

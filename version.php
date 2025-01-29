@@ -30,5 +30,5 @@ $plugin->release   = 2022020101;
 $plugin->requires  = 2020061500;
 $plugin->component = 'report_adhocreportviewer';
 $plugin->dependencies = [
-    'report_customsql' => 2021070700
+    'report_customsql' => 2021070700,
 ];

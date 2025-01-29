@@ -43,9 +43,9 @@ $string['lastexecutiontime'] = 'Last execution time: {$a} seconds.';
 
 $string['nopermission'] = 'You do not have permission to view this report';
 
+$string['pluginname'] = 'Adhoc report viewer';
 $string['potentialpeople'] = 'Potential people';
 $string['potentialpeoplematching'] = 'Potential people matching';
-$string['pluginname'] = 'Adhoc report viewer';
 $string['privacy:metadata'] = 'The report_adhocreportviewer plugin does not store any personal data.';
 
 $string['removepeople'] = 'Remove people';

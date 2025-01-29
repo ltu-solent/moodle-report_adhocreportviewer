@@ -125,7 +125,7 @@ class api {
         $DB->delete_records('report_adhocreportviewer', [
             'cqid' => $cqid,
             'accessid' => $accessid,
-            'accesstype' => $accesstype
+            'accesstype' => $accesstype,
         ]);
     }
 

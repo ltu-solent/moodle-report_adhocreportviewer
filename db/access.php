@@ -27,11 +27,10 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
     // People who can define new queries.
-    'report/adhocreportviewer:manage' => array(
+    'report/adhocreportviewer:manage' => [
         'riskbitmask' => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-        )
-    )
+        'legacy' => [],
+    ],
 ];

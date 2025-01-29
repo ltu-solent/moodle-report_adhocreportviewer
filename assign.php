@@ -37,7 +37,7 @@ $context = context_system::instance();
 require_capability('report/adhocreportviewer:manage', $context);
 
 $PAGE->set_context($context);
-$PAGE->set_url('/report/adhocreportviewer/assign.php', array('cqid' => $cqid));
+$PAGE->set_url('/report/adhocreportviewer/assign.php', ['cqid' => $cqid]);
 $PAGE->set_pagelayout('admin');
 
 $returnurl = new moodle_url('/report/adhocreportviewer/index.php');
@@ -57,9 +57,9 @@ echo $OUTPUT->heading(get_string('assignto', 'report_adhocreportviewer', format_
 
 // Get the user_selectors we will need.
 $potentialuserselector = new \report_adhocreportviewer\forms\candidate_user_selector('addselect',
-    array('cqid' => $report->id, 'accesstype' => 'user', 'accesscontext' => $context));
+    ['cqid' => $report->id, 'accesstype' => 'user', 'accesscontext' => $context]);
 $existinguserselector = new \report_adhocreportviewer\forms\existing_user_selector('removeselect',
-    array('cqid' => $report->id, 'accesstype' => 'user', 'accesscontext' => $context));
+    ['cqid' => $report->id, 'accesstype' => 'user', 'accesscontext' => $context]);
 
 
 

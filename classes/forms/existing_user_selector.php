@@ -93,7 +93,7 @@ class existing_user_selector extends user_selector_base {
         $availableusers = $DB->get_records_sql($fields . $sql . $order, array_merge($params, $sortparams));
 
         if (empty($availableusers)) {
-            return array();
+            return [];
         }
 
         if ($search) {
@@ -102,7 +102,7 @@ class existing_user_selector extends user_selector_base {
             $groupname = get_string('currentpeople', 'report_adhocreportviewer');
         }
 
-        return array($groupname => $availableusers);
+        return [$groupname => $availableusers];
     }
 
     /**

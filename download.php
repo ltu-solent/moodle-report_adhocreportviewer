@@ -25,13 +25,12 @@
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->dirroot . '/report/customsql/locallib.php');
 require_once($CFG->libdir . '/filelib.php');
-require_once($CFG->libdir . '/dataformatlib.php');
 
 $id = required_param('id', PARAM_INT);
 $csvtimestamp = required_param('timestamp', PARAM_INT);
 $dataformat = optional_param('dataformat', '', PARAM_ALPHA);
 
-$report = $DB->get_record('report_customsql_queries', array('id' => $id));
+$report = $DB->get_record('report_customsql_queries', ['id' => $id]);
 if (!$report) {
     throw new moodle_exception('invalidreportid', 'report_customsql', new moodle_url('/report/adhocreportviewer/index.php'), $id);
 }

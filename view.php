@@ -110,7 +110,7 @@ if ($report->runable == 'manual') {
     try {
         $csvtimestamp = report_customsql_generate_csv($report, time());
         // Get the updated execution times.
-        $report = $DB->get_record('report_customsql_queries', array('id' => $id));
+        $report = $DB->get_record('report_customsql_queries', ['id' => $id]);
     } catch (Exception $e) {
         throw new moodle_exception('queryfailed', 'report_customsql',
             new moodle_url('/report/adhocreportviewer/index.php'), $e->getMessage());
@@ -143,8 +143,12 @@ if (!empty($paramvalues)) {
             $value = userdate($value, '%F %T');
         }
         echo html_writer::tag('p', get_string('parametervalue', 'report_customsql',
-                array('name' => html_writer::tag('b', str_replace('_', ' ', $name)),
-                'value' => s($value))));
+                [
+                    'name' => html_writer::tag('b', str_replace('_', ' ', $name)),
+                    'value' => s($value),
+                ]
+            )
+        );
     }
 }
 
@@ -191,10 +195,10 @@ if (is_null($csvtimestamp)) {
         if ($rowlimitexceeded) {
             echo html_writer::tag('p', get_string('recordlimitreached', 'report_customsql',
                     $report->querylimit ?? get_config('report_customsql', 'querylimitdefault')),
-                    array('class' => 'admin_note'));
+                    ['class' => 'admin_note']);
         } else {
             echo html_writer::tag('p', get_string('recordcount', 'report_customsql', $count),
-                    array('class' => 'admin_note'));
+                    ['class' => 'admin_note']);
         }
 
         echo report_customsql_time_note($report, 'p');
@@ -212,11 +216,14 @@ if (is_null($csvtimestamp)) {
                 if ($time == $csvtimestamp) {
                     echo html_writer::tag('b', $formattedtime);
                 } else {
-                    echo html_writer::tag('a', $formattedtime,
-                                array('href' => new moodle_url(report_customsql_url('view.php'),
-                                array('id' => $id, 'timestamp' => $time))));
+                    echo html_writer::tag('a', $formattedtime, [
+                        'href' => new moodle_url(report_customsql_url('view.php'), [
+                            'id' => $id,
+                            'timestamp' => $time,
+                        ]),
+                    ]);
+                    echo html_writer::end_tag('li');
                 }
-                echo '</li>';
             }
             echo html_writer::end_tag('ul');
         }
@@ -225,7 +232,7 @@ if (is_null($csvtimestamp)) {
 
 if (!empty($queryparams)) {
     echo html_writer::tag('p', html_writer::link(
-            new moodle_url('/report/adhocreportviewer/view.php', array('cqid' => $id)),
+            new moodle_url('/report/adhocreportviewer/view.php', ['cqid' => $id]),
             get_string('changetheparameters', 'report_customsql')));
 }
 
