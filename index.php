@@ -35,7 +35,7 @@ $categories = \report_adhocreportviewer\local\api::categories($reports);
 $canmanageaccess = \report_adhocreportviewer\local\api::canmanageaccess();
 $canedit = has_capability('report/customsql:definequeries', context\system::instance());
 if (count($reports) == 0 && !$canedit) {
-    throw new moodle_exception('noaccess');
+    throw new moodle_exception('noaccess', 'report_adhocreportviewer');
 }
 $permissions = new stdClass();
 $permissions->canedit = $canedit;

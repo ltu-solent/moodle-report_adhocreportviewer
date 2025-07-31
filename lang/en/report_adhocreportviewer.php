@@ -41,6 +41,7 @@ $string['editreport'] = 'Edit report';
 
 $string['lastexecutiontime'] = 'Last execution time: {$a} seconds.';
 
+$string['noaccess'] = 'You do not have access to this page';
 $string['nopermission'] = 'You do not have permission to view this report';
 
 $string['pluginname'] = 'Adhoc report viewer';
