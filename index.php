@@ -23,6 +23,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\context;
+
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->dirroot . '/report/customsql/locallib.php');
 
@@ -31,8 +33,8 @@ require_login();
 $reports = \report_adhocreportviewer\local\api::viewablereports($USER);
 $categories = \report_adhocreportviewer\local\api::categories($reports);
 $canmanageaccess = \report_adhocreportviewer\local\api::canmanageaccess();
-$canedit = has_capability('report/customsql:definequeries', context_system::instance());
-if (count($reports) == 0) {
+$canedit = has_capability('report/customsql:definequeries', context\system::instance());
+if (count($reports) == 0 && !$canedit) {
     throw new moodle_exception('noaccess');
 }
 $permissions = new stdClass();

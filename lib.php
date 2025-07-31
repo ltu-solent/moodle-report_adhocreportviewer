@@ -23,6 +23,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\context;
+
 /**
  * Add link to reports section on profile page
  *
@@ -39,7 +41,8 @@ function report_adhocreportviewer_myprofile_navigation(\core_user\output\myprofi
     }
     // Only show the report link if they have access to any reports.
     $reports = \report_adhocreportviewer\local\api::viewablereports($USER);
-    if (count($reports) == 0) {
+    $canedit = has_capability('report/customsql:definequeries', context\system::instance());
+    if (count($reports) == 0 && !$canedit) {
         return true;
     }
     $url = new moodle_url('/report/adhocreportviewer/index.php');
