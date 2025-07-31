@@ -25,11 +25,11 @@
 
 namespace report_adhocreportviewer\output;
 
-use moodle_url;
-use renderable;
-use renderer_base;
+use core\url;
+use core\output\renderable;
+use core\output\renderer_base;
 use stdClass;
-use templatable;
+use core\output\templatable;
 
 /**
  * Output class for list of reports
@@ -98,7 +98,7 @@ class report_list implements renderable, templatable {
                 $params = ['showcat' => $category->id];
             }
             $cat->catname = $category->name;
-            $cat->linkhref = new moodle_url('/report/adhocreportviewer/index.php', $params);
+            $cat->linkhref = new url('/report/adhocreportviewer/index.php', $params);
             // Category content.
             $cc = new stdClass();
             $cc->manual = count($category->types['manual']);

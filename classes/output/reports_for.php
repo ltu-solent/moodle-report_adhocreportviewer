@@ -25,11 +25,11 @@
 
 namespace report_adhocreportviewer\output;
 
-use moodle_url;
-use renderable;
-use renderer_base;
+use core\url;
+use core\output\renderable;
+use core\output\renderer_base;
 use stdClass;
-use templatable;
+use core\output\templatable;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -88,15 +88,15 @@ class reports_for implements renderable, templatable {
         $reports = [];
         foreach ($this->reports as $report) {
             $item = new stdClass();
-            $item->viewurl = new moodle_url('/report/adhocreportviewer/view.php', ['cqid' => $report->id]);
+            $item->viewurl = new url('/report/adhocreportviewer/view.php', ['cqid' => $report->id]);
             $item->viewdisplayname = s($report->displayname);
             if ($this->permissions->canedit) {
                 $item->canedit = new stdClass();
-                $item->canedit->url = new moodle_url('/report/customsql/edit.php', ['id' => $report->id]);
+                $item->canedit->url = new url('/report/customsql/edit.php', ['id' => $report->id]);
             }
             if ($this->permissions->canmanageaccess) {
                 $item->canmanageaccess = new stdClass();
-                $item->canmanageaccess->url = new moodle_url('/report/adhocreportviewer/assign.php',
+                $item->canmanageaccess->url = new url('/report/adhocreportviewer/assign.php',
                     ['cqid' => $report->id]);
             }
             if ($report->lastrun) {

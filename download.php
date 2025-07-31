@@ -22,6 +22,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\context;
+use core\exception\moodle_exception;
+use core\url;
+
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->dirroot . '/report/customsql/locallib.php');
 require_once($CFG->libdir . '/filelib.php');
@@ -32,11 +36,11 @@ $dataformat = optional_param('dataformat', '', PARAM_ALPHA);
 
 $report = $DB->get_record('report_customsql_queries', ['id' => $id]);
 if (!$report) {
-    throw new moodle_exception('invalidreportid', 'report_customsql', new moodle_url('/report/adhocreportviewer/index.php'), $id);
+    throw new moodle_exception('invalidreportid', 'report_customsql', new url('/report/adhocreportviewer/index.php'), $id);
 }
 
 require_login();
-$context = context_system::instance();
+$context = context\system::instance();
 $canview = \report_adhocreportviewer\local\api::canview($USER, $id);
 if (!$canview) {
     throw new moodle_exception('nopermissions');
@@ -47,7 +51,7 @@ list($csvfilename) = report_customsql_csv_filename($report, $csvtimestamp);
 $handle = fopen($csvfilename, 'r');
 if ($handle === false) {
     throw new moodle_exception('unknowndownloadfile', 'report_customsql',
-                new moodle_url('/report/adhocreportviewer/view.php?cqid=' . $id));
+                new url('/report/adhocreportviewer/view.php?cqid=' . $id));
 }
 
 $fields = report_customsql_read_csv_row($handle);

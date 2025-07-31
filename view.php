@@ -23,6 +23,12 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\context;
+use core\exception\moodle_exception;
+use core\output\html_writer;
+use core\url;
+use core_table\output\html_table;
+
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->dirroot . '/report/customsql/locallib.php');
@@ -33,7 +39,7 @@ $id = required_param('cqid', PARAM_INT);
 $urlparams = ['cqid' => $id];
 $report = $DB->get_record('report_customsql_queries', ['id' => $id]);
 if (!$report) {
-    throw new moodle_exception('invalidreportid', 'report_customsql', new moodle_url('/report/adhocreportviewer/index.php'), $id);
+    throw new moodle_exception('invalidreportid', 'report_customsql', new url('/report/adhocreportviewer/index.php'), $id);
 }
 
 require_login();
@@ -45,10 +51,10 @@ if (!$canview) {
 
 // Setup the page.
 $PAGE->set_pagelayout('admin');
-$PAGE->set_context(context_system::instance());
-$PAGE->set_url(new moodle_url('/report/adhocreportviewer/view.php'), $urlparams);
+$PAGE->set_context(context\system::instance());
+$PAGE->set_url(new url('/report/adhocreportviewer/view.php'), $urlparams);
 $PAGE->set_title(format_string($report->displayname));
-$returnurl = new moodle_url('/report/adhocreportviewer/index.php');
+$returnurl = new url('/report/adhocreportviewer/index.php');
 $PAGE->navbar->add(get_string('pluginname', 'report_adhocreportviewer'), $returnurl);
 $PAGE->navbar->add(format_string($report->displayname));
 
@@ -66,7 +72,7 @@ if ($report->runable == 'manual') {
             }
         }
 
-        $relativeurl = new moodle_url('/report/adhocreportviewer/view.php', ['cqid' => $id]);
+        $relativeurl = new url('/report/adhocreportviewer/view.php', ['cqid' => $id]);
         $mform = new report_customsql_view_form($relativeurl, $queryparams);
         $formdefaults = [];
         if ($report->queryparams) {
@@ -80,7 +86,7 @@ if ($report->runable == 'manual') {
         $mform->set_data($formdefaults);
 
         if ($mform->is_cancelled()) {
-            $redirect = new moodle_url('/report/adhocreportviewer/index.php');
+            $redirect = new url('/report/adhocreportviewer/index.php');
             redirect($redirect);
         }
 
@@ -113,7 +119,7 @@ if ($report->runable == 'manual') {
         $report = $DB->get_record('report_customsql_queries', ['id' => $id]);
     } catch (Exception $e) {
         throw new moodle_exception('queryfailed', 'report_customsql',
-            new moodle_url('/report/adhocreportviewer/index.php'), $e->getMessage());
+            new url('/report/adhocreportviewer/index.php'), $e->getMessage());
     }
 } else {
     // Runs on schedule.
@@ -204,7 +210,7 @@ if (is_null($csvtimestamp)) {
         echo report_customsql_time_note($report, 'p');
 
         echo $OUTPUT->download_dataformat_selector(get_string('downloadthisreportas', 'report_customsql'),
-            new moodle_url('/report/adhocreportviewer/download.php'), 'dataformat', ['id' => $id, 'timestamp' => $csvtimestamp]);
+            new url('/report/adhocreportviewer/download.php'), 'dataformat', ['id' => $id, 'timestamp' => $csvtimestamp]);
 
         $archivetimes = report_customsql_get_archive_times($report);
         if (count($archivetimes) > 1) {
@@ -217,7 +223,7 @@ if (is_null($csvtimestamp)) {
                     echo html_writer::tag('b', $formattedtime);
                 } else {
                     echo html_writer::tag('a', $formattedtime, [
-                        'href' => new moodle_url(report_customsql_url('view.php'), [
+                        'href' => new url(report_customsql_url('view.php'), [
                             'id' => $id,
                             'timestamp' => $time,
                         ]),
@@ -232,14 +238,14 @@ if (is_null($csvtimestamp)) {
 
 if (!empty($queryparams)) {
     echo html_writer::tag('p', html_writer::link(
-            new moodle_url('/report/adhocreportviewer/view.php', ['cqid' => $id]),
+            new url('/report/adhocreportviewer/view.php', ['cqid' => $id]),
             get_string('changetheparameters', 'report_customsql')));
 }
 
 
 $imglarrow = $OUTPUT->pix_icon('t/left', '');
 echo html_writer::start_tag('p').
-     $OUTPUT->action_link(new moodle_url('/report/adhocreportviewer/index.php'), $imglarrow.
+     $OUTPUT->action_link(new url('/report/adhocreportviewer/index.php'), $imglarrow.
              get_string('backtoreportlist', 'report_customsql')).
      html_writer::end_tag('p').
      $OUTPUT->footer();

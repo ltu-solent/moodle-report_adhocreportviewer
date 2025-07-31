@@ -23,6 +23,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\context;
+use core\url;
+
 require_once(dirname(__FILE__) . '/../../config.php');
 
 $cqid = required_param('cqid', PARAM_INT);
@@ -31,7 +34,7 @@ $accesstype = optional_param('accesstype', 'user', PARAM_ALPHA);
 require_login();
 
 $report = $DB->get_record('report_customsql_queries', ['id' => $cqid], '*', MUST_EXIST);
-$context = context_system::instance();
+$context = context\system::instance();
 
 
 require_capability('report/adhocreportviewer:manage', $context);
@@ -40,7 +43,7 @@ $PAGE->set_context($context);
 $PAGE->set_url('/report/adhocreportviewer/assign.php', ['cqid' => $cqid]);
 $PAGE->set_pagelayout('admin');
 
-$returnurl = new moodle_url('/report/adhocreportviewer/index.php');
+$returnurl = new url('/report/adhocreportviewer/index.php');
 
 if (optional_param('cancel', false, PARAM_BOOL)) {
     redirect($returnurl);

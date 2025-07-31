@@ -25,7 +25,7 @@
 
 namespace report_adhocreportviewer\local;
 
-use context_system;
+use core\context;
 use stdClass;
 
 /**
@@ -59,7 +59,7 @@ class api {
         if (is_siteadmin()) {
             return true;
         }
-        return has_capability('report/adhocreportviewer:manage', context_system::instance());
+        return has_capability('report/adhocreportviewer:manage', context\system::instance());
     }
 
     /**

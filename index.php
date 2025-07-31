@@ -24,6 +24,8 @@
  */
 
 use core\context;
+use core\exception\moodle_exception;
+use core\url;
 
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->dirroot . '/report/customsql/locallib.php');
@@ -42,8 +44,8 @@ $permissions->canedit = $canedit;
 $permissions->canmanageaccess = $canmanageaccess;
 
 $PAGE->set_pagelayout('admin');
-$PAGE->set_context(context_system::instance());
-$PAGE->set_url(new moodle_url('/report/adhocreportviewer/index.php'));
+$PAGE->set_context(context\system::instance());
+$PAGE->set_url(new url('/report/adhocreportviewer/index.php'));
 $PAGE->set_title(get_string('pluginname', 'report_adhocreportviewer'));
 $PAGE->navbar->add(get_string('pluginname', 'report_adhocreportviewer'));
 

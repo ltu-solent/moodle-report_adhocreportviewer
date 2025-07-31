@@ -24,6 +24,7 @@
  */
 
 use core\context;
+use core\url;
 
 /**
  * Add link to reports section on profile page
@@ -45,7 +46,7 @@ function report_adhocreportviewer_myprofile_navigation(\core_user\output\myprofi
     if (count($reports) == 0 && !$canedit) {
         return true;
     }
-    $url = new moodle_url('/report/adhocreportviewer/index.php');
+    $url = new url('/report/adhocreportviewer/index.php');
     $node = new core_user\output\myprofile\node('reports',
         'adhocreportviewer', get_string('pluginname', 'report_adhocreportviewer'),
         null, $url);

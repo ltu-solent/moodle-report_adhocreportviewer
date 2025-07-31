@@ -25,11 +25,11 @@
 
 namespace report_adhocreportviewer\output;
 
-use moodle_url;
-use renderable;
-use renderer_base;
+use core\url;
+use core\output\renderable;
+use core\output\renderer_base;
 use stdClass;
-use templatable;
+use core\output\templatable;
 
 /**
  * User selector table and form
@@ -71,7 +71,7 @@ class user_selector implements renderable, templatable {
         $data->formid = 'assignform';
         $data->formurl = $PAGE->url;
         $data->sesskey = sesskey();
-        $data->returnurl = new moodle_url('/report/adhocreportviewer/');
+        $data->returnurl = new url('/report/adhocreportviewer/');
         // We do this here, because the mustache checker doesn't like a dangling "for".
         $data->removeselectlabel = '<label for="removeselect">' .
             get_string('currentpeople', 'report_adhocreportviewer') .
