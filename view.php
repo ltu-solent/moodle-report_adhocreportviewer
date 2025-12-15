@@ -46,7 +46,7 @@ require_login();
 
 $canview = \report_adhocreportviewer\local\api::canview($USER, $id);
 if (!$canview) {
-    throw new moodle_exception('nopermission', 'report_adhocreportviewer', '', null, $USER->id . ' - ' . $id );
+    throw new moodle_exception('nopermission', 'report_adhocreportviewer', '', null, $USER->id . ' - ' . $id);
 }
 
 // Setup the page.
@@ -91,7 +91,6 @@ if ($report->runable == 'manual') {
         }
 
         if (($newreport = $mform->get_data()) || count($paramvalues) == count($queryparams)) {
-
             // Pick up named parameters into serialised array.
             if ($newreport) {
                 foreach ($queryparams as $queryparam => $formparam) {
@@ -99,7 +98,6 @@ if ($report->runable == 'manual') {
                 }
             }
             $report->queryparams = serialize($paramvalues);
-
         } else {
             echo $OUTPUT->header();
             echo $OUTPUT->heading(format_string($report->displayname));
@@ -118,8 +116,12 @@ if ($report->runable == 'manual') {
         // Get the updated execution times.
         $report = $DB->get_record('report_customsql_queries', ['id' => $id]);
     } catch (Exception $e) {
-        throw new moodle_exception('queryfailed', 'report_customsql',
-            new url('/report/adhocreportviewer/index.php'), $e->getMessage());
+        throw new moodle_exception(
+            'queryfailed',
+            'report_customsql',
+            new url('/report/adhocreportviewer/index.php'),
+            $e->getMessage()
+        );
     }
 } else {
     // Runs on schedule.
@@ -148,11 +150,12 @@ if (!empty($paramvalues)) {
         if (report_customsql_get_element_type($name) == 'date_time_selector') {
             $value = userdate($value, '%F %T');
         }
-        echo html_writer::tag('p', get_string('parametervalue', 'report_customsql',
-                [
-                    'name' => html_writer::tag('b', str_replace('_', ' ', $name)),
-                    'value' => s($value),
-                ]
+        echo html_writer::tag(
+            'p',
+            get_string(
+                'parametervalue',
+                'report_customsql',
+                ['name' => html_writer::tag('b', str_replace('_', ' ', $name)), 'value' => s($value)]
             )
         );
     }
@@ -162,21 +165,24 @@ $count = 0;
 if (is_null($csvtimestamp)) {
     echo html_writer::tag('p', get_string('nodatareturned', 'report_customsql'));
 } else {
-    list($csvfilename, $csvtimestamp) = report_customsql_csv_filename($report, $csvtimestamp);
+    [$csvfilename, $csvtimestamp] = report_customsql_csv_filename($report, $csvtimestamp);
     if (!is_readable($csvfilename)) {
         echo html_writer::tag('p', get_string('notrunyet', 'report_customsql'));
     } else {
         $handle = fopen($csvfilename, 'r');
 
         if ($report->runable != 'manual' && !$report->singlerow) {
-            echo $OUTPUT->heading(get_string('reportfor', 'report_customsql',
-                    userdate($csvtimestamp, get_string('strftimedate'))), 3);
+            echo $OUTPUT->heading(
+                get_string('reportfor', 'report_customsql', userdate($csvtimestamp, get_string('strftimedate'))),
+                3
+            );
         }
 
         $table = new html_table();
         $table->id = 'report_customsql_results';
-        list($table->head, $linkcolumns) = report_customsql_get_table_headers(
-                report_customsql_read_csv_row($handle));
+        [$table->head, $linkcolumns] = report_customsql_get_table_headers(
+            report_customsql_read_csv_row($handle)
+        );
 
         $rowlimitexceeded = false;
         while ($row = report_customsql_read_csv_row($handle)) {
@@ -199,23 +205,38 @@ if (is_null($csvtimestamp)) {
         echo html_writer::table($table);
 
         if ($rowlimitexceeded) {
-            echo html_writer::tag('p', get_string('recordlimitreached', 'report_customsql',
-                    $report->querylimit ?? get_config('report_customsql', 'querylimitdefault')),
-                    ['class' => 'admin_note']);
+            echo html_writer::tag(
+                'p',
+                get_string(
+                    'recordlimitreached',
+                    'report_customsql',
+                    $report->querylimit ?? get_config('report_customsql', 'querylimitdefault')
+                ),
+                ['class' => 'admin_note']
+            );
         } else {
-            echo html_writer::tag('p', get_string('recordcount', 'report_customsql', $count),
-                    ['class' => 'admin_note']);
+            echo html_writer::tag(
+                'p',
+                get_string('recordcount', 'report_customsql', $count),
+                ['class' => 'admin_note']
+            );
         }
 
         echo report_customsql_time_note($report, 'p');
 
-        echo $OUTPUT->download_dataformat_selector(get_string('downloadthisreportas', 'report_customsql'),
-            new url('/report/adhocreportviewer/download.php'), 'dataformat', ['id' => $id, 'timestamp' => $csvtimestamp]);
+        echo $OUTPUT->download_dataformat_selector(
+            get_string('downloadthisreportas', 'report_customsql'),
+            new url('/report/adhocreportviewer/download.php'),
+            'dataformat',
+            ['id' => $id, 'timestamp' => $csvtimestamp]
+        );
 
         $archivetimes = report_customsql_get_archive_times($report);
         if (count($archivetimes) > 1) {
-            echo $OUTPUT->heading(get_string('archivedversions', 'report_customsql'), 3).
-                 html_writer::start_tag('ul');
+            echo $OUTPUT->heading(
+                get_string('archivedversions', 'report_customsql'),
+                3
+            ) . html_writer::start_tag('ul');
             foreach ($archivetimes as $time) {
                 $formattedtime = userdate($time, get_string('strftimedate'));
                 echo html_writer::start_tag('li');
@@ -237,15 +258,19 @@ if (is_null($csvtimestamp)) {
 }
 
 if (!empty($queryparams)) {
-    echo html_writer::tag('p', html_writer::link(
+    echo html_writer::tag(
+        'p',
+        html_writer::link(
             new url('/report/adhocreportviewer/view.php', ['cqid' => $id]),
-            get_string('changetheparameters', 'report_customsql')));
+            get_string('changetheparameters', 'report_customsql')
+        )
+    );
 }
 
 
 $imglarrow = $OUTPUT->pix_icon('t/left', '');
-echo html_writer::start_tag('p').
-     $OUTPUT->action_link(new url('/report/adhocreportviewer/index.php'), $imglarrow.
-             get_string('backtoreportlist', 'report_customsql')).
-     html_writer::end_tag('p').
+echo html_writer::start_tag('p') .
+     $OUTPUT->action_link(new url('/report/adhocreportviewer/index.php'), $imglarrow .
+             get_string('backtoreportlist', 'report_customsql')) .
+     html_writer::end_tag('p') .
      $OUTPUT->footer();

@@ -47,9 +47,13 @@ function report_adhocreportviewer_myprofile_navigation(\core_user\output\myprofi
         return true;
     }
     $url = new url('/report/adhocreportviewer/index.php');
-    $node = new core_user\output\myprofile\node('reports',
-        'adhocreportviewer', get_string('pluginname', 'report_adhocreportviewer'),
-        null, $url);
-        $tree->add_node($node);
+    $node = new core_user\output\myprofile\node(
+        'reports',
+        'adhocreportviewer',
+        get_string('pluginname', 'report_adhocreportviewer'),
+        null,
+        $url
+    );
+    $tree->add_node($node);
     return true;
 }

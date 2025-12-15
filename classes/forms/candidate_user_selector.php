@@ -35,7 +35,6 @@ require_once($CFG->dirroot . '/user/selector/lib.php');
  * User selector class for candidate users
  */
 class candidate_user_selector extends user_selector_base {
-
     /**
      * customsql id
      *
@@ -70,7 +69,7 @@ class candidate_user_selector extends user_selector_base {
     public function find_users($search) {
         global $DB;
         // By default wherecondition retrieves all users except the deleted, not confirmed and guest.
-        list($wherecondition, $params) = $this->search_sql($search, 'u');
+        [$wherecondition, $params] = $this->search_sql($search, 'u');
         $params['cqid'] = $this->cqid;
         $params['accesstype'] = $this->accesstype;
 
@@ -81,7 +80,7 @@ class candidate_user_selector extends user_selector_base {
                 LEFT JOIN {report_adhocreportviewer} v ON (v.accessid = u.id AND v.cqid = :cqid AND accesstype = :accesstype)
                 WHERE v.id IS NULL AND $wherecondition";
 
-        list($sort, $sortparams) = users_order_by_sql('u', $search, $this->accesscontext);
+        [$sort, $sortparams] = users_order_by_sql('u', $search, $this->accesscontext);
         $order = ' ORDER BY ' . $sort;
 
         if (!$this->is_validating()) {

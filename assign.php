@@ -59,18 +59,19 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('assignto', 'report_adhocreportviewer', format_string($report->displayname)));
 
 // Get the user_selectors we will need.
-$potentialuserselector = new \report_adhocreportviewer\forms\candidate_user_selector('addselect',
-    ['cqid' => $report->id, 'accesstype' => 'user', 'accesscontext' => $context]);
-$existinguserselector = new \report_adhocreportviewer\forms\existing_user_selector('removeselect',
-    ['cqid' => $report->id, 'accesstype' => 'user', 'accesscontext' => $context]);
-
-
+$potentialuserselector = new \report_adhocreportviewer\forms\candidate_user_selector(
+    'addselect',
+    ['cqid' => $report->id, 'accesstype' => 'user', 'accesscontext' => $context]
+);
+$existinguserselector = new \report_adhocreportviewer\forms\existing_user_selector(
+    'removeselect',
+    ['cqid' => $report->id, 'accesstype' => 'user', 'accesscontext' => $context]
+);
 
 // Process incoming user assignments to the report.
 if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoassign = $potentialuserselector->get_selected_users();
     if (!empty($userstoassign)) {
-
         foreach ($userstoassign as $adduser) {
             \report_adhocreportviewer\local\api::add_access($report->id, $adduser->id, $accesstype);
         }
@@ -95,7 +96,8 @@ if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
 
 $userselector = new \report_adhocreportviewer\output\user_selector(
     $existinguserselector,
-    $potentialuserselector);
+    $potentialuserselector
+);
 echo $OUTPUT->render($userselector);
 
 echo $OUTPUT->footer();

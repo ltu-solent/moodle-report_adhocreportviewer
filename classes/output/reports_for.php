@@ -39,7 +39,6 @@ require_once($CFG->dirroot . '/report/customsql/locallib.php');
  * Reports for run frequency type (Manual, Daily, Weekly, Monthly)
  */
 class reports_for implements renderable, templatable {
-
     /**
      * Report list
      *
@@ -96,8 +95,10 @@ class reports_for implements renderable, templatable {
             }
             if ($this->permissions->canmanageaccess) {
                 $item->canmanageaccess = new stdClass();
-                $item->canmanageaccess->url = new url('/report/adhocreportviewer/assign.php',
-                    ['cqid' => $report->id]);
+                $item->canmanageaccess->url = new url(
+                    '/report/adhocreportviewer/assign.php',
+                    ['cqid' => $report->id]
+                );
             }
             if ($report->lastrun) {
                 $item->lastrun = true;

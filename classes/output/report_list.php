@@ -35,7 +35,6 @@ use core\output\templatable;
  * Output class for list of reports
  */
 class report_list implements renderable, templatable {
-
     /**
      * Report categories
      *
@@ -107,28 +106,44 @@ class report_list implements renderable, templatable {
             $cc->monthly = count($category->types['monthly']);
             $reportcounts = get_string('categorycontent', 'report_customsql', $cc);
             $cat->reportcounts = $reportcounts;
-            if (empty($category->types['manual']) && empty($category->types['daily'])
-                && empty($category->types['weekly']) && empty($category->types['monthly'])) {
+            if (
+                empty($category->types['manual']) &&
+                empty($category->types['daily']) &&
+                empty($category->types['weekly']) &&
+                empty($category->types['monthly'])
+            ) {
                     $cat->noreports = true;
             } else {
                 if ($cc->manual > 0) {
                     $manual = new \report_adhocreportviewer\output\reports_for(
-                        $category->types['manual'], 'manual', $this->permissions);
+                        $category->types['manual'],
+                        'manual',
+                        $this->permissions
+                    );
                     $cat->manual = $manual->export_for_template($output);
                 }
                 if ($cc->daily > 0) {
                     $daily = new \report_adhocreportviewer\output\reports_for(
-                        $category->types['daily'], 'daily', $this->permissions);
+                        $category->types['daily'],
+                        'daily',
+                        $this->permissions
+                    );
                     $cat->daily = $daily->export_for_template($output);
                 }
                 if ($cc->weekly > 0) {
                     $weekly = new \report_adhocreportviewer\output\reports_for(
-                        $category->types['weekly'], 'weekly', $this->permissions);
+                        $category->types['weekly'],
+                        'weekly',
+                        $this->permissions
+                    );
                     $cat->weekly = $weekly->export_for_template($output);
                 }
                 if ($cc->monthly > 0) {
                     $monthly = new \report_adhocreportviewer\output\reports_for(
-                        $category->types['monthly'], 'monthly', $this->permissions);
+                        $category->types['monthly'],
+                        'monthly',
+                        $this->permissions
+                    );
                     $cat->monthly = $monthly->export_for_template($output);
                 }
             }

@@ -32,3 +32,4 @@ $plugin->component = 'report_adhocreportviewer';
 $plugin->dependencies = [
     'report_customsql' => 2025072400,
 ];
+$plugin->supported = [405, 501];

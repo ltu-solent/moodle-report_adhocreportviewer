@@ -46,12 +46,15 @@ if (!$canview) {
     throw new moodle_exception('nopermissions');
 }
 
-list($csvfilename) = report_customsql_csv_filename($report, $csvtimestamp);
+[$csvfilename] = report_customsql_csv_filename($report, $csvtimestamp);
 
 $handle = fopen($csvfilename, 'r');
 if ($handle === false) {
-    throw new moodle_exception('unknowndownloadfile', 'report_customsql',
-                new url('/report/adhocreportviewer/view.php?cqid=' . $id));
+    throw new moodle_exception(
+        'unknowndownloadfile',
+        'report_customsql',
+        new url('/report/adhocreportviewer/view.php?cqid=' . $id)
+    );
 }
 
 $fields = report_customsql_read_csv_row($handle);
@@ -65,10 +68,10 @@ fclose($handle);
 
 $filename = clean_filename($report->displayname);
 
-\core\dataformat::download_data($filename, $dataformat, $fields, $rows->getIterator(), function(array $row) use ($dataformat) {
+\core\dataformat::download_data($filename, $dataformat, $fields, $rows->getIterator(), function (array $row) use ($dataformat) {
     // HTML export content will need escaping.
     if (strcasecmp($dataformat, 'html') === 0) {
-        $row = array_map(function($cell) {
+        $row = array_map(function ($cell) {
             return s($cell);
         }, $row);
     }

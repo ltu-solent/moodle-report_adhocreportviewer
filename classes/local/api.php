@@ -74,8 +74,10 @@ class api {
         if (is_siteadmin()) {
             return true;
         }
-        $recordexists = $DB->record_exists('report_adhocreportviewer',
-            ['cqid' => $id, 'accesstype' => 'user', 'accessid' => $user->id]);
+        $recordexists = $DB->record_exists(
+            'report_adhocreportviewer',
+            ['cqid' => $id, 'accesstype' => 'user', 'accessid' => $user->id]
+        );
         return $recordexists;
     }
 
@@ -97,7 +99,7 @@ class api {
                 $cats[] = $cat;
             }
         }
-        list($insql, $inparams) = $DB->get_in_or_equal($cats);
+        [$insql, $inparams] = $DB->get_in_or_equal($cats);
         $categories = $DB->get_records_select('report_customsql_categories', "id {$insql}", $inparams);
         foreach ($categories as $category) {
             $category->types = [];
@@ -140,12 +142,12 @@ class api {
         if (is_siteadmin()) {
             return $DB->get_records('report_customsql_queries');
         }
-        $viewables = $DB->get_records('report_adhocreportviewer', ['accesstype' => 'user' , 'accessid' => $user->id], '', 'cqid');
+        $viewables = $DB->get_records('report_adhocreportviewer', ['accesstype' => 'user', 'accessid' => $user->id], '', 'cqid');
         if (count($viewables) == 0) {
             return [];
         }
         $ids = array_keys($viewables);
-        list($insql, $inparams) = $DB->get_in_or_equal($ids);
+        [$insql, $inparams] = $DB->get_in_or_equal($ids);
         $reports = $DB->get_records_sql("SELECT * FROM {report_customsql_queries} WHERE id $insql", $inparams);
         return $reports;
     }
